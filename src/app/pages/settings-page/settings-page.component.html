@@ -1,0 +1,129 @@
+<section class="page-head">
+  <div>
+    <h1>Paramètres établissement</h1>
+    <p class="sub">
+      Identité, monnaie locale (FCFA / XOF), langue par défaut et secrets
+      paiement — alignés sur la stack
+      <code>schoolOSbe</code>.
+    </p>
+  </div>
+</section>
+
+@if (saveState() === "saved") {
+  <p class="save-flash card card-pad" role="status">
+    Préférences enregistrées (démo — pas de persistance serveur).
+  </p>
+}
+
+@if (isSuperAdmin()) {
+  <div class="super-admin-hint card card-pad">
+    <h2 class="super-admin-hint__title">Super Admin — vous</h2>
+    <p class="super-admin-hint__text">
+      Ces réglages s’appliquent au <strong>tenant de démonstration</strong> (ex.
+      Lycée Horizon). La configuration <em>globale</em> plateforme
+      (multi-écoles) vit sous les écrans dédiés.
+    </p>
+    <div class="super-admin-hint__actions">
+      <a routerLink="/app/platform/onboarding" class="btn btn-secondary btn-sm"
+        >Onboarding</a
+      >
+      <a routerLink="/app/platform/monitoring" class="btn btn-secondary btn-sm"
+        >Monitoring</a
+      >
+      <a routerLink="/app/platform/billing" class="btn btn-secondary btn-sm"
+        >Facturation SaaS</a
+      >
+      <a routerLink="/app/platform/support" class="btn btn-secondary btn-sm"
+        >Support</a
+      >
+    </div>
+  </div>
+}
+
+<form
+  class="sections"
+  #settingsForm="ngForm"
+  novalidate
+  (ngSubmit)="saveGeneral(settingsForm)"
+>
+  <section class="card card-pad block">
+    <h2>Général</h2>
+    <div class="grid2">
+      <label>
+        Nom affiché *
+        <input
+          class="field"
+          type="text"
+          name="displayName"
+          [(ngModel)]="displayName"
+          required
+          minlength="2"
+          autocomplete="organization"
+        />
+      </label>
+      <label>
+        Fuseau horaire
+        <select class="field" name="timezone" [(ngModel)]="timezone">
+          <option value="Africa/Dakar">Africa/Dakar (UTC+0)</option>
+        </select>
+      </label>
+      <label>
+        Langue interface
+        <select class="field" name="language" [(ngModel)]="language">
+          <option value="fr-SN">Français (fr-SN)</option>
+          <option value="wo" disabled>Wolof (bientôt)</option>
+        </select>
+      </label>
+      <label>
+        Devise
+        <input
+          class="field"
+          type="text"
+          value="XOF (FCFA)"
+          readonly
+          tabindex="-1"
+        />
+      </label>
+    </div>
+  </section>
+
+  <section class="card card-pad block">
+    <h2>Paiements &amp; webhooks</h2>
+    <p class="muted">
+      Clés API Wave / Orange Money / Free Money stockées côté serveur (KMS /
+      variables d’environnement). Aucun secret dans le navigateur.
+    </p>
+    <label>
+      URL callback (exemple)
+      <input
+        class="field"
+        type="url"
+        value="https://api.schoolos.sn/v1/webhooks/wave"
+        readonly
+        tabindex="-1"
+      />
+    </label>
+    <p class="fine">
+      Besoin de tester un flux ? Utilisez
+      <a routerLink="/app/checkout">Paiement</a> en environnement sandbox.
+    </p>
+  </section>
+
+  <section class="card card-pad block">
+    <h2>Sécurité</h2>
+    <label class="check">
+      <input type="checkbox" checked disabled />
+      Journal d’audit sur les modifications financières
+    </label>
+    <label class="check">
+      <input type="checkbox" name="mfaAccounting" [(ngModel)]="mfaAccounting" />
+      MFA obligatoire pour les rôles « Comptabilité »
+    </label>
+  </section>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">
+      Enregistrer les préférences
+    </button>
+  </div>
+</form>
