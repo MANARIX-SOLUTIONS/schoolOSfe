@@ -1,0 +1,93 @@
+<section class="page-head">
+  <div>
+    <h1>Élèves</h1>
+    <p class="sub">
+      Année scolaire 2025–2026 — filtrez par niveau, classe ou statut
+      d’inscription.
+    </p>
+  </div>
+  <div class="page-head__actions">
+    @if (canOpenStudentCards()) {
+      <a routerLink="/app/student-cards" class="btn btn-secondary"
+        >Cartes élèves</a
+      >
+    }
+    @if (canManageEnrollment()) {
+      <a routerLink="/app/enrollment" class="btn btn-primary"
+        >Nouvelle inscription</a
+      >
+    }
+  </div>
+</section>
+
+@if (exportFlash(); as ex) {
+  <p class="flash-export card card-pad" role="status">{{ ex }}</p>
+}
+
+<div class="toolbar card card-pad">
+  <input
+    type="search"
+    class="search"
+    name="studentSearch"
+    placeholder="Rechercher nom, matricule, tuteur…"
+    aria-label="Recherche élèves"
+    [ngModel]="searchQuery()"
+    (ngModelChange)="searchQuery.set($event)"
+  />
+  <select
+    class="select"
+    name="levelFilter"
+    aria-label="Filtrer par niveau"
+    [ngModel]="levelFilter()"
+    (ngModelChange)="levelFilter.set($event)"
+  >
+    <option value="all">Tous les niveaux</option>
+    <option value="primaire">Primaire</option>
+    <option value="college">Collège</option>
+    <option value="lycee">Lycée</option>
+  </select>
+  <button type="button" class="btn btn-secondary" (click)="exportCsv()">
+    Exporter CSV
+  </button>
+</div>
+
+<div class="table-wrap card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Élève</th>
+        <th>Niveau / classe</th>
+        <th>Tuteur principal</th>
+        <th>Statut</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of filteredRows(); track r.name) {
+        <tr>
+          <td>
+            <strong>{{ r.name }}</strong>
+          </td>
+          <td>{{ r.level }}</td>
+          <td>{{ r.guardian }}</td>
+          <td>
+            @if (r.status === "Actif") {
+              <span class="badge">Actif</span>
+            } @else if (r.status === "En attente") {
+              <span class="badge badge-warn">En attente</span>
+            } @else {
+              <span class="badge badge-danger">Ancien</span>
+            }
+          </td>
+          <td>
+            @if (canOpenCheckout()) {
+              <a routerLink="/app/checkout">Paiements</a>
+            } @else {
+              <span class="muted">—</span>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

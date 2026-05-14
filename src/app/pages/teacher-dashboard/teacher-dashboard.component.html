@@ -1,0 +1,59 @@
+<section class="page-head">
+  <div>
+    <h1>Espace enseignant·e</h1>
+    <p class="sub">
+      Suivi pédagogique et listes d’élèves — finance et structure réservées à la
+      direction (démo RBAC).
+    </p>
+  </div>
+  <div class="page-head__actions">
+    <a routerLink="/app/academic" class="btn btn-primary">Pédagogie</a>
+  </div>
+</section>
+
+<section class="kpi-grid" aria-label="Indicateurs péda">
+  @for (k of kpis; track k.label) {
+    <article class="kpi card card-pad card--hoverable">
+      <div class="kpi__label">{{ k.label }}</div>
+      <div class="kpi__value">{{ k.value }}</div>
+      <div
+        class="kpi__delta"
+        [class.kpi__delta--warn]="k.tone === 'warn'"
+        [class.kpi__delta--up]="k.tone === 'up'"
+      >
+        {{ k.delta }}
+      </div>
+    </article>
+  }
+</section>
+
+<div class="layout-split">
+  <section class="panel card">
+    <div class="panel__head">
+      <h2>Ce mois</h2>
+    </div>
+    <ul class="alert-list">
+      @for (a of alerts; track a.title) {
+        <li
+          class="alert-item"
+          [class.alert-item--warn]="a.type === 'warn'"
+          [class.alert-item--info]="a.type === 'info'"
+        >
+          <strong>{{ a.title }}</strong>
+          <span>{{ a.detail }}</span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="panel card">
+    <div class="panel__head">
+      <h2>Raccourcis</h2>
+    </div>
+    <div class="shortcuts">
+      @for (s of shortcuts; track s.path) {
+        <a [routerLink]="s.path" class="shortcut">{{ s.label }}</a>
+      }
+    </div>
+  </section>
+</div>

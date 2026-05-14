@@ -1,0 +1,113 @@
+<section class="page-head">
+  <div>
+    <h1>Enseignants</h1>
+    <p class="sub">
+      Profils, matières et affectations aux classes — synchronisation emploi du
+      temps à venir.
+    </p>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="toggleInvite()">
+    @if (showInvite()) {
+      Fermer
+    } @else {
+      Inviter un enseignant
+    }
+  </button>
+</section>
+
+@if (inviteFlash(); as msg) {
+  <p class="flash card card-pad" role="status">{{ msg }}</p>
+}
+
+@if (showInvite()) {
+  <form
+    class="panel-form card card-pad"
+    novalidate
+    (ngSubmit)="sendInvite(inviteForm)"
+    #inviteForm="ngForm"
+  >
+    <h2 class="panel-form__title">Invitation (démo)</h2>
+    <div class="panel-form__grid">
+      <label>
+        Nom complet *
+        <input
+          class="field"
+          type="text"
+          name="inviteName"
+          [(ngModel)]="inviteName"
+          required
+          minlength="2"
+          autocomplete="name"
+        />
+      </label>
+      <label>
+        E-mail professionnel *
+        <input
+          class="field"
+          type="email"
+          name="inviteEmail"
+          [(ngModel)]="inviteEmail"
+          required
+          email
+          autocomplete="email"
+          placeholder="p.nom@lycee-horizon.sn"
+        />
+      </label>
+      <label>
+        Matières
+        <input
+          class="field"
+          type="text"
+          name="inviteSubjects"
+          [(ngModel)]="inviteSubjects"
+          placeholder="Mathématiques, SVT…"
+        />
+      </label>
+      <label>
+        Classes
+        <input
+          class="field"
+          type="text"
+          name="inviteClasses"
+          [(ngModel)]="inviteClasses"
+          placeholder="4e B, Tle S1…"
+        />
+      </label>
+    </div>
+    <div class="panel-form__actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelInvite()">
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-primary">
+        Envoyer l’invitation
+      </button>
+    </div>
+  </form>
+}
+
+<div class="table-wrap card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Matières</th>
+        <th>Classes</th>
+        <th>Contact</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of rows(); track r.email) {
+        <tr>
+          <td>
+            <strong>{{ r.name }}</strong>
+          </td>
+          <td>{{ r.subjects }}</td>
+          <td>{{ r.classes }}</td>
+          <td>
+            <a href="mailto:{{ r.email }}">{{ r.email }}</a>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

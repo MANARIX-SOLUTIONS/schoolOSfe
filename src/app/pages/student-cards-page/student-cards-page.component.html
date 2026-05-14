@@ -1,0 +1,59 @@
+<section class="page-head">
+  <div>
+    <h1>Cartes élèves</h1>
+    <p class="sub">
+      Supports d’identification scolaire et QR pour pointage / cantine (démo —
+      export PDF simulé).
+    </p>
+  </div>
+  <div class="page-head__actions">
+    <a routerLink="/app/students" class="btn btn-secondary">Retour élèves</a>
+  </div>
+</section>
+
+<div class="banner card card-pad">
+  <p class="banner__text">
+    <strong>Lecture démo.</strong>
+    En production, les cartes sont générées avec photo, code-barres ou QR et
+    droits selon le rôle (direction, enseignant·e en consultation).
+  </p>
+</div>
+
+@if (downloadFlash(); as msg) {
+  <p class="flash card card-pad" role="status">{{ msg }}</p>
+}
+
+<div class="table-wrap card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Élève</th>
+        <th>Classe</th>
+        <th>Réf. carte</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of rows; track r.ref) {
+        <tr>
+          <td>
+            <strong>{{ r.name }}</strong>
+          </td>
+          <td>{{ r.level }}</td>
+          <td>
+            <code>{{ r.ref }}</code>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-ghost btn-sm"
+              (click)="downloadCardPdf(r)"
+            >
+              Télécharger PDF
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
