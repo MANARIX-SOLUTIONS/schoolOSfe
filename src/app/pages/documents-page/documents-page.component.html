@@ -1,0 +1,106 @@
+<section class="page-head">
+  <div>
+    <h1>Documents</h1>
+    <p class="sub">
+      Stockage versionné, permissions par rôle (élève, enseignant, famille,
+      direction). Contenu servi via URL signées côté <code>schoolOSbe</code>.
+    </p>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="toggleImport()">
+    @if (showImport()) {
+      Fermer
+    } @else {
+      Importer
+    }
+  </button>
+</section>
+
+@if (importFlash(); as msg) {
+  <p class="flash card card-pad" role="status">{{ msg }}</p>
+}
+
+@if (showImport()) {
+  <form
+    class="panel-form card card-pad"
+    novalidate
+    (ngSubmit)="registerDoc(docForm)"
+    #docForm="ngForm"
+  >
+    <h2 class="panel-form__title">Référencer un document (démo)</h2>
+    <div class="panel-form__grid">
+      <label class="full">
+        Nom du fichier *
+        <input
+          class="field"
+          type="text"
+          name="docLabel"
+          [(ngModel)]="docLabel"
+          required
+          minlength="3"
+          placeholder="ex. Autorisation_sortie_mai2026"
+        />
+      </label>
+      <label>
+        Format
+        <select class="field" name="docType" [(ngModel)]="docType">
+          <option value="PDF">PDF</option>
+          <option value="DOCX">DOCX</option>
+          <option value="XLSX">XLSX</option>
+        </select>
+      </label>
+      <label>
+        Visibilité
+        <select class="field" name="docVisibility" [(ngModel)]="docVisibility">
+          <option value="Public école">Public école</option>
+          <option value="Direction uniquement">Direction uniquement</option>
+          <option value="Famille + enseignant">Famille + enseignant</option>
+        </select>
+      </label>
+    </div>
+    <div class="panel-form__actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelImport()">
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-primary">
+        Ajouter à la bibliothèque
+      </button>
+    </div>
+  </form>
+}
+
+<div class="table-wrap card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Fichier</th>
+        <th>Type</th>
+        <th>Visibilité</th>
+        <th>MàJ</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of rows(); track r.name + r.updated) {
+        <tr>
+          <td>
+            <strong>{{ r.name }}</strong>
+          </td>
+          <td>{{ r.type }}</td>
+          <td>{{ r.role }}</td>
+          <td>{{ r.updated }}</td>
+          <td>
+            <button type="button" class="linkbtn" (click)="downloadDoc(r)">
+              Télécharger
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<p class="hint card card-pad">
+  Pensez au journal d’audit pour les changements sensibles (contrats, pièces
+  financièrement impactées). Voir
+  <a routerLink="/app/settings">Paramètres</a>.
+</p>

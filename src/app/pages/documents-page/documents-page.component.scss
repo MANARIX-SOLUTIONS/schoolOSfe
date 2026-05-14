@@ -1,0 +1,128 @@
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.page-head h1 {
+  font-size: 1.65rem;
+}
+
+.sub {
+  margin: 0.25rem 0 0;
+  color: var(--color-text-muted);
+  max-width: 58ch;
+}
+
+.sub code {
+  font-size: 0.8125rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  padding: 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-subtle);
+  background: rgba(15, 23, 42, 0.02);
+}
+
+.hint {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.hint a {
+  font-weight: 600;
+}
+
+.flash {
+  margin-bottom: 1rem;
+  border: 1px solid rgba(11, 122, 114, 0.28);
+  background: rgba(11, 122, 114, 0.08);
+  color: #065f56;
+  font-size: 0.9375rem;
+}
+
+.panel-form {
+  margin-bottom: 1rem;
+}
+
+.panel-form__title {
+  font-size: 1.05rem;
+  margin: 0 0 1rem;
+}
+
+.panel-form__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .panel-form__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel-form__grid .full {
+    grid-column: 1 / -1;
+  }
+}
+
+.panel-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.field {
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-strong);
+  font: inherit;
+  font-weight: 400;
+}
+
+.panel-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.linkbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
