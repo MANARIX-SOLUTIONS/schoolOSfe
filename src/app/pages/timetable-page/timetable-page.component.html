@@ -1,0 +1,51 @@
+<section class="page-head">
+  <div>
+    <h1>Emploi du temps</h1>
+    <p class="sub">
+      Grille hebdomadaire (vue lecture). Détection des conflits de salles et des
+      professeurs : étape d’intégration backend.
+    </p>
+  </div>
+  <div class="page-head__row">
+    <select
+      class="select"
+      name="timetableClass"
+      aria-label="Classe"
+      [ngModel]="selectedClass()"
+      (ngModelChange)="selectedClass.set($event)"
+    >
+      <option value="4e-b">4e B</option>
+      <option value="tle-s1">Tle S1</option>
+    </select>
+    <button type="button" class="btn btn-secondary" (click)="exportPdf()">
+      Exporter PDF
+    </button>
+  </div>
+</section>
+
+@if (exportFlash(); as msg) {
+  <p class="flash card card-pad" role="status">{{ msg }}</p>
+}
+
+<div class="grid-wrap card">
+  <table class="grid-table">
+    <thead>
+      <tr>
+        <th></th>
+        @for (d of days; track d) {
+          <th scope="col">{{ d }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (slot of slots; track slot; let si = $index) {
+        <tr>
+          <th scope="row">{{ slot }}</th>
+          @for (d of days; track d; let di = $index) {
+            <td>{{ cell(di, si) }}</td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
