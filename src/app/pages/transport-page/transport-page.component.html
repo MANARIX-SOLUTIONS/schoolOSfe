@@ -1,0 +1,109 @@
+<section class="page-head">
+  <div>
+    <h1>Transport scolaire</h1>
+    <p class="sub">
+      Lignes, arrêts et inscriptions. Facturation liée aux frais de scolarité ou
+      forfait séparé en FCFA.
+    </p>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="toggleLineForm()">
+    @if (showLineForm()) {
+      Fermer
+    } @else {
+      Nouvelle ligne
+    }
+  </button>
+</section>
+
+@if (lineFlash(); as msg) {
+  <p class="flash card card-pad" role="status">{{ msg }}</p>
+}
+
+@if (showLineForm()) {
+  <form
+    class="panel-form card card-pad"
+    novalidate
+    (ngSubmit)="addLine(lineForm)"
+    #lineForm="ngForm"
+  >
+    <h2 class="panel-form__title">Nouvelle ligne</h2>
+    <div class="panel-form__grid">
+      <label class="full">
+        Intitulé *
+        <input
+          class="field"
+          type="text"
+          name="lineName"
+          [(ngModel)]="lineName"
+          required
+          minlength="3"
+          placeholder="ex. Ligne Dakar — Rufisque"
+        />
+      </label>
+      <label>
+        Arrêts (libellé)
+        <input
+          class="field"
+          type="text"
+          name="lineStops"
+          [(ngModel)]="lineStops"
+          placeholder="ex. 10 arrêts — Plateau, …"
+        />
+      </label>
+      <label>
+        Inscrits *
+        <input
+          class="field"
+          type="number"
+          name="lineSubs"
+          [(ngModel)]="lineSubs"
+          required
+          min="0"
+        />
+      </label>
+      <label>
+        Forfait annuel (FCFA) *
+        <input
+          class="field"
+          type="number"
+          name="lineFee"
+          [(ngModel)]="lineFee"
+          required
+          min="0"
+          step="500"
+        />
+      </label>
+    </div>
+    <div class="panel-form__actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelLine()">
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </div>
+  </form>
+}
+
+<div class="table-wrap card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Ligne</th>
+        <th>Arrêts</th>
+        <th>Inscrits</th>
+        <th>Forfait annuel</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of rows(); track r.name + r.fee) {
+        <tr>
+          <td>
+            <strong>{{ r.name }}</strong>
+          </td>
+          <td>{{ r.stops }}</td>
+          <td>{{ r.subscribers }}</td>
+          <td>{{ r.fee | fcfa }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
