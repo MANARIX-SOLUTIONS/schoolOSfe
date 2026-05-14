@@ -1,0 +1,99 @@
+<section class="page-head">
+  <div>
+    <h1>Rapports &amp; exports</h1>
+    <p class="sub">
+      Grand livre des encaissements, impayés, listing élèves — génération côté
+      serveur avec fenêtre horaire et traçabilité.
+    </p>
+  </div>
+</section>
+
+@if (exportFlash(); as msg) {
+  <p class="flash card card-pad" role="status">{{ msg }}</p>
+}
+
+<form
+  class="export-form card card-pad"
+  novalidate
+  (ngSubmit)="requestExport(exportForm)"
+  #exportForm="ngForm"
+>
+  <h2 class="export-form__title">Paramètres d’export</h2>
+  <div class="export-form__row">
+    <label>
+      Du *
+      <input
+        class="field"
+        type="date"
+        name="dateFrom"
+        [(ngModel)]="dateFrom"
+        required
+      />
+    </label>
+    <label>
+      Au *
+      <input
+        class="field"
+        type="date"
+        name="dateTo"
+        [(ngModel)]="dateTo"
+        required
+      />
+    </label>
+    <label>
+      Type de rapport *
+      <select class="field" name="exportKind" [(ngModel)]="exportKind" required>
+        <option value="ledger">Grand livre (CSV)</option>
+        <option value="overdue">Impayés</option>
+        <option value="enrollments">Inscriptions</option>
+        <option value="transport">Présence transport</option>
+      </select>
+    </label>
+    <button type="submit" class="btn btn-primary export-form__submit">
+      Demander le fichier
+    </button>
+  </div>
+</form>
+
+<div class="grid">
+  <article class="card card-pad tile">
+    <h2>Grand livre (CSV)</h2>
+    <p class="muted">
+      Toutes transactions validées, analytique par compte école.
+    </p>
+    <button
+      type="button"
+      class="btn btn-secondary btn-block"
+      (click)="quick('Grand livre')"
+    >
+      Télécharger
+    </button>
+  </article>
+  <article class="card card-pad tile">
+    <h2>Impayés</h2>
+    <p class="muted">
+      Montants dus, ancienneté, contacts famille — relances incluses.
+    </p>
+    <a routerLink="/app/finance" class="btn btn-secondary btn-block"
+      >Voir le dashboard</a
+    >
+  </article>
+  <article class="card card-pad tile">
+    <h2>Inscriptions</h2>
+    <p class="muted">Entrées / sorties par niveau sur la période choisie.</p>
+    <button
+      type="button"
+      class="btn btn-secondary btn-block"
+      (click)="quick('Inscriptions')"
+    >
+      Exporter
+    </button>
+  </article>
+  <article class="card card-pad tile">
+    <h2>Présence transport</h2>
+    <p class="muted">Montées / descendantes par ligne et par date.</p>
+    <a routerLink="/app/transport" class="btn btn-secondary btn-block"
+      >Lignes</a
+    >
+  </article>
+</div>
