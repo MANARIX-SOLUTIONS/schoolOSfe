@@ -1,0 +1,189 @@
+<div
+  class="shell"
+  [class.shell--nav-open]="navOpen()"
+  [class.shell--super-admin]="isSuperAdmin()"
+>
+  <aside
+    id="app-sidebar-nav"
+    class="sidebar"
+    aria-label="Navigation principale"
+  >
+    <div class="sidebar__brand">
+      <img
+        ngSrc="/SchoolOS.png"
+        width="80"
+        height="80"
+        alt=""
+        class="app-brand-logo app-brand-logo--sidebar"
+      />
+      <div>
+        <div class="sidebar__title">SchoolOS</div>
+        <div class="sidebar__subtitle">Sénégal</div>
+      </div>
+    </div>
+
+    <nav class="sidebar__nav">
+      @for (group of navGroups(); track group.title) {
+        <div class="sidebar__group">
+          <h3 class="sidebar__group-title">{{ group.title }}</h3>
+          @for (item of group.items; track item.path) {
+            <a
+              class="sidebar__link"
+              [routerLink]="item.path"
+              routerLinkActive="sidebar__link--active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="closeNav()"
+            >
+              <span
+                class="sidebar__icon"
+                [attr.data-icon]="item.icon"
+                aria-hidden="true"
+              ></span>
+              {{ item.label }}
+            </a>
+          }
+        </div>
+      }
+    </nav>
+
+    <div class="sidebar__foot">
+      <a
+        class="sidebar__link sidebar__link--muted"
+        routerLink="/parent"
+        (click)="closeNav()"
+      >
+        Aperçu portail parents
+      </a>
+      <a
+        class="sidebar__link sidebar__link--muted"
+        routerLink="/"
+        (click)="closeNav()"
+      >
+        Quitter l’espace école
+      </a>
+    </div>
+  </aside>
+
+  <div
+    class="backdrop"
+    (click)="closeNav()"
+    (keydown.escape)="closeNav()"
+    tabindex="-1"
+    role="presentation"
+    [class.backdrop--visible]="navOpen()"
+  ></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button
+        type="button"
+        class="topbar__menu btn btn-ghost"
+        (click)="toggleNav()"
+        [attr.aria-expanded]="navOpen()"
+        aria-controls="app-sidebar-nav"
+      >
+        <span class="sr-only">Menu</span>
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <div class="topbar__context">
+        <div class="topbar__crumb">{{ topbarCrumbs().eyebrow }}</div>
+        <div class="topbar__school">{{ topbarCrumbs().title }}</div>
+        @if (isSuperAdmin()) {
+          <nav
+            class="topbar__platform-chips"
+            aria-label="Raccourcis plateforme"
+          >
+            <a
+              routerLink="/app/platform/onboarding"
+              routerLinkActive="topbar__chip--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="topbar__chip"
+              >Onboarding</a
+            >
+            <a
+              routerLink="/app/platform/monitoring"
+              routerLinkActive="topbar__chip--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="topbar__chip"
+              >Monitoring</a
+            >
+            <a
+              routerLink="/app/platform/billing"
+              routerLinkActive="topbar__chip--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="topbar__chip"
+              >Facturation</a
+            >
+            <a
+              routerLink="/app/platform/support"
+              routerLinkActive="topbar__chip--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="topbar__chip"
+              >Support</a
+            >
+          </nav>
+        }
+      </div>
+
+      <div class="topbar__actions">
+        <a
+          class="topbar__notify"
+          routerLink="/app/notifications"
+          aria-label="Centre de notifications"
+        >
+          <span class="topbar__dot" aria-hidden="true"></span>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
+            />
+          </svg>
+        </a>
+        <div
+          class="topbar__user"
+          [attr.title]="sessionLabel() ?? 'Compte établissement'"
+        >
+          <span class="topbar__avatar" aria-hidden="true">
+            {{ (sessionLabel() || "AD").slice(0, 2).toUpperCase() }}
+          </span>
+          <span class="topbar__user-name">{{
+            sessionLabel() ?? "Visiteur démo"
+          }}</span>
+        </div>
+        <button
+          type="button"
+          class="btn btn-ghost topbar__out"
+          (click)="signOut()"
+        >
+          Déconnexion
+        </button>
+      </div>
+    </header>
+
+    <main class="content" id="main-content">
+      <router-outlet />
+    </main>
+
+    <footer class="shell-footer">
+      © {{ footerYear }} SchoolOS Sénégal — Données chiffrées, hébergement
+      UE/Afrique.
+    </footer>
+  </div>
+</div>
