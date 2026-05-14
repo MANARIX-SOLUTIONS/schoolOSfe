@@ -1,0 +1,78 @@
+<div class="parent">
+  <header class="parent__nav">
+    <a class="parent__logo" routerLink="/parent">
+      <img
+        ngSrc="/SchoolOS.png"
+        width="72"
+        height="72"
+        alt=""
+        class="app-brand-logo"
+      />
+      <span>Paiement — {{ familyGreeting() }}</span>
+    </a>
+    <a routerLink="/parent" class="btn btn-ghost btn-sm">Retour au portail</a>
+  </header>
+
+  <main
+    class="parent__main parent__main--narrow"
+    id="main-content"
+    tabindex="-1"
+  >
+    <section class="card card-pad">
+      <h1>Régler une échéance</h1>
+      <p class="muted">
+        Montant T2 pour votre enfant — même flux Mobile Money que côté école,
+        isolé au contexte famille (API à relier).
+      </p>
+      <p class="amount">{{ amountDue | fcfa }}</p>
+      <div class="methods" aria-hidden="true">
+        <span class="money-logo money-wave">W</span>
+        <span class="money-logo money-om">OM</span>
+        <span class="money-logo money-free">FM</span>
+      </div>
+
+      @if (done()) {
+        <p class="pay-ok" role="status">
+          Redirection simulée vers l’opérateur — démo (aucun appel réseau).
+        </p>
+      } @else {
+        <form
+          class="pay-form"
+          novalidate
+          (ngSubmit)="submit(payForm)"
+          #payForm="ngForm"
+        >
+          <label>
+            Téléphone Mobile Money *
+            <input
+              class="field"
+              type="tel"
+              name="payerPhone"
+              [(ngModel)]="payerPhone"
+              required
+              minlength="9"
+              autocomplete="tel"
+              placeholder="+221 77 …"
+            />
+          </label>
+          <button
+            type="submit"
+            class="btn btn-primary btn-block"
+            [disabled]="busy()"
+          >
+            @if (busy()) {
+              Ouverture…
+            } @else {
+              Continuer vers l’opérateur
+            }
+          </button>
+        </form>
+      }
+
+      <p class="fine">
+        En production : redirection sécurisée + webhook de confirmation sans
+        exposer les secrets.
+      </p>
+    </section>
+  </main>
+</div>

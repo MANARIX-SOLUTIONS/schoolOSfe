@@ -1,0 +1,259 @@
+<div class="parent">
+  <header class="parent__nav">
+    <a class="parent__logo" routerLink="/parent">
+      <img
+        ngSrc="/SchoolOS.png"
+        width="72"
+        height="72"
+        alt=""
+        class="app-brand-logo"
+      />
+      <span>Portail familles — SchoolOS</span>
+    </a>
+    <div class="parent__links">
+      <a routerLink="/connexion" [queryParams]="{ returnUrl: '/app/dashboard' }"
+        >Connexion établissement</a
+      >
+      <a routerLink="/">Site public</a>
+      <button
+        type="button"
+        class="btn btn-ghost btn-sm"
+        (click)="signOutParent()"
+      >
+        Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <main class="parent__main" id="main-content" tabindex="-1">
+    <section class="welcome card card-pad card--hoverable">
+      <p class="eyebrow">Bonjour — {{ familyGreeting() }}</p>
+      <h1>Vos paiements et actualités scolaires</h1>
+      <p class="lead">
+        Interface simplifiée en français — prochaine étape : i18n avancée
+        (Wolof, anglais) selon le profil.
+      </p>
+    </section>
+
+    <section class="parent-kpis" aria-label="Résumé portail famille">
+      @for (k of portalKpis; track k.label) {
+        <div class="parent-kpi card card-pad">
+          <span class="parent-kpi__label">{{ k.label }}</span>
+          @switch (k.kind) {
+            @case ("money") {
+              <span class="parent-kpi__value">{{ k.valueFcfa | fcfa }}</span>
+            }
+            @case ("text") {
+              <span class="parent-kpi__value parent-kpi__value--text">{{
+                k.text
+              }}</span>
+            }
+          }
+        </div>
+      }
+    </section>
+
+    @if (actionToast(); as t) {
+      <p class="action-toast card card-pad" role="status">{{ t }}</p>
+    }
+
+    <section class="card card-pad school-section">
+      <h2>Scolarité — lecture</h2>
+      <p class="school-section__intro">
+        Aperçu des notes, bulletins et absences (données démo, aligné doc §2.4).
+      </p>
+      <div class="school-tabs" role="tablist" aria-label="Scolarité">
+        <button
+          type="button"
+          role="tab"
+          class="school-tabs__btn"
+          [class.school-tabs__btn--active]="schoolTab() === 0"
+          [attr.aria-selected]="schoolTab() === 0"
+          (click)="pickSchoolTab(0)"
+        >
+          Notes
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="school-tabs__btn"
+          [class.school-tabs__btn--active]="schoolTab() === 1"
+          [attr.aria-selected]="schoolTab() === 1"
+          (click)="pickSchoolTab(1)"
+        >
+          Bulletins
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="school-tabs__btn"
+          [class.school-tabs__btn--active]="schoolTab() === 2"
+          [attr.aria-selected]="schoolTab() === 2"
+          (click)="pickSchoolTab(2)"
+        >
+          Absences
+        </button>
+      </div>
+      <div class="school-panel" role="tabpanel">
+        @switch (schoolTab()) {
+          @case (0) {
+            <table class="mini">
+              <thead>
+                <tr>
+                  <th>Matière</th>
+                  <th>Contrôle</th>
+                  <th>Note /20</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mathématiques</td>
+                  <td>CC2 — S2</td>
+                  <td><strong>14,5</strong></td>
+                </tr>
+                <tr>
+                  <td>Français</td>
+                  <td>Dissertation</td>
+                  <td><strong>12,0</strong></td>
+                </tr>
+                <tr>
+                  <td>SVT</td>
+                  <td>TP noté</td>
+                  <td><strong>15,0</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          }
+          @case (1) {
+            <table class="mini">
+              <thead>
+                <tr>
+                  <th>Période</th>
+                  <th>Classe</th>
+                  <th>Fichier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Trimestre 1 — 2025-2026</td>
+                  <td>Terminale S1</td>
+                  <td>
+                    <button
+                      type="button"
+                      class="linkbtn-plain"
+                      (click)="demoPdfBulletin('Trimestre 1 — 2025-2026')"
+                    >
+                      Bulletin PDF
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Trimestre 2 — 2025-2026</td>
+                  <td>Terminale S1</td>
+                  <td><span class="pending">Bientôt</span></td>
+                </tr>
+              </tbody>
+            </table>
+          }
+          @case (2) {
+            <table class="mini">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Motif</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>06/05/2026</td>
+                  <td>Maladie (justificatif reçu)</td>
+                  <td><span class="badge-ok">Justifiée</span></td>
+                </tr>
+                <tr>
+                  <td>22/04/2026</td>
+                  <td>Retard matin</td>
+                  <td><span class="badge-warn">À compléter</span></td>
+                </tr>
+              </tbody>
+            </table>
+          }
+        }
+      </div>
+    </section>
+
+    <div class="parent__grid">
+      <section class="card card-pad card--hoverable">
+        <h2>Prochaine échéance</h2>
+        <p class="amount">{{ 450000 | fcfa }}</p>
+        <p class="meta">Échéance T2 — à régler avant le 15 mai 2026</p>
+        <a routerLink="/parent/paiement" class="btn btn-primary btn-block"
+          >Payer maintenant</a
+        >
+        <div class="pay-icons" aria-label="Moyens acceptés">
+          <span class="money-logo money-wave">W</span>
+          <span class="money-logo money-om">OM</span>
+          <span class="money-logo money-free">FM</span>
+          <span class="money-logo money-card">CB</span>
+        </div>
+      </section>
+
+      <section class="card card-pad">
+        <h2>Dernières nouvelles</h2>
+        <ul class="news">
+          <li>
+            <strong>Réunion parents</strong><span>Mercredi 21 mai — 18h00</span>
+          </li>
+          <li>
+            <strong>Sortie pédagogique</strong
+            ><span>Autorisation à signer en ligne (bientôt)</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card card-pad wide">
+        <h2>Relevé des paiements</h2>
+        <table class="mini">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Libellé</th>
+              <th>Montant</th>
+              <th>Reçu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>28/04/2026</td>
+              <td>Scolarité T1</td>
+              <td>{{ 450000 | fcfa }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="linkbtn-plain"
+                  (click)="demoPdfReceipt('Scolarité T1', '28/04/2026')"
+                >
+                  PDF
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>12/09/2025</td>
+              <td>Frais d’inscription</td>
+              <td>{{ 75000 | fcfa }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="linkbtn-plain"
+                  (click)="demoPdfReceipt('Frais d’inscription', '12/09/2025')"
+                >
+                  PDF
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+</div>

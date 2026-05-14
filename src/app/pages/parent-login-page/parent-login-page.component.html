@@ -1,0 +1,74 @@
+<div class="auth mesh-hero">
+  <header class="auth__bar">
+    <a routerLink="/parent" class="auth__brand">
+      <img
+        ngSrc="/SchoolOS.png"
+        width="72"
+        height="72"
+        alt=""
+        class="app-brand-logo"
+      />
+      Portail familles
+    </a>
+    <a routerLink="/" class="btn btn-ghost">Site public</a>
+  </header>
+
+  <main class="auth__main card" id="main-content" tabindex="-1">
+    <h1>Connexion familles</h1>
+    <p class="lead">
+      Recevez un code par SMS ou WhatsApp (démo : saisissez un numéro puis
+      validez). Pas de jetons réels côté front pour l’instant.
+    </p>
+
+    <form class="form" (ngSubmit)="submit()" #f="ngForm">
+      <label>
+        Téléphone du tuteur
+        <input
+          class="field"
+          type="tel"
+          name="phone"
+          [(ngModel)]="phone"
+          autocomplete="tel"
+          required
+        />
+      </label>
+      <label>
+        Code à 6 chiffres (optionnel en démo)
+        <input
+          class="field"
+          type="text"
+          name="otp"
+          [(ngModel)]="otp"
+          inputmode="numeric"
+          maxlength="6"
+          placeholder="••••••"
+        />
+      </label>
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="busy || f.invalid"
+      >
+        @if (busy) {
+          Vérification…
+        } @else {
+          Accéder au portail
+        }
+      </button>
+    </form>
+
+    <button
+      type="button"
+      class="btn btn-secondary btn-block"
+      (click)="skipLogin()"
+    >
+      Continuer en mode démo parent
+    </button>
+
+    <p class="footer-links">
+      <a routerLink="/connexion">Connexion établissement</a>
+      ·
+      <a routerLink="/parent">Retour</a>
+    </p>
+  </main>
+</div>
