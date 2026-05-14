@@ -1,0 +1,93 @@
+<div class="auth mesh-hero">
+  <header class="auth__bar">
+    <a routerLink="/" class="auth__brand">
+      <img
+        ngSrc="/SchoolOS.png"
+        width="72"
+        height="72"
+        alt=""
+        class="app-brand-logo"
+      />
+      SchoolOS Sénégal
+    </a>
+    <a routerLink="/onboarding" class="btn btn-ghost">Créer un établissement</a>
+  </header>
+
+  <main class="auth__main card" id="main-content" tabindex="-1">
+    <h1>Connexion</h1>
+    <p class="lead">
+      Accès sécurisé direction, comptabilité, enseignement et vie scolaire.
+      Authentification réelle branchée sur <code>schoolOSbe</code> à l’étape
+      suivante.
+    </p>
+
+    <form class="form" (ngSubmit)="submit()" #f="ngForm">
+      <label>
+        E-mail professionnel
+        <input
+          class="field"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          autocomplete="username"
+          required
+        />
+      </label>
+      <label>
+        Mot de passe
+        <input
+          class="field"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          autocomplete="current-password"
+        />
+      </label>
+      <fieldset class="role-fieldset">
+        <legend>Rôle (démo)</legend>
+        <p class="role-hint">
+          Choisissez le tableau de bord : plateforme, direction, compta ou
+          pédagogie (démo).
+        </p>
+        <div class="role-grid">
+          @for (r of roleOptions; track r) {
+            <label class="role-option">
+              <input
+                type="radio"
+                name="demoRole"
+                [value]="r"
+                [(ngModel)]="demoRole"
+              />
+              <span>{{ roleLabels[r] }}</span>
+            </label>
+          }
+        </div>
+      </fieldset>
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="busy || f.invalid"
+      >
+        @if (busy) {
+          Connexion…
+        } @else {
+          Se connecter
+        }
+      </button>
+    </form>
+
+    <button
+      type="button"
+      class="btn btn-secondary btn-block"
+      (click)="skipLogin()"
+    >
+      Continuer en mode démo (sans mot de passe)
+    </button>
+
+    <p class="footer-links">
+      <a routerLink="/parent">Espace parents</a>
+      ·
+      <a routerLink="/">Retour au site</a>
+    </p>
+  </main>
+</div>
