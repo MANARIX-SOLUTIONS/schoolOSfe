@@ -1,0 +1,107 @@
+<section class="page-head">
+  <div>
+    <h1>Centre de notifications</h1>
+    <p class="sub">
+      Alertes temps réel : paiements, inscriptions, relances et messages
+      parents.
+    </p>
+  </div>
+  <div class="filters" role="radiogroup" aria-label="Filtrer les notifications">
+    <button
+      type="button"
+      role="radio"
+      class="btn"
+      [class.btn-secondary]="filter() === 'all'"
+      [class.btn-ghost]="filter() !== 'all'"
+      [attr.aria-checked]="filter() === 'all'"
+      (click)="setFilter('all')"
+    >
+      Tout
+    </button>
+    <button
+      type="button"
+      role="radio"
+      class="btn"
+      [class.btn-secondary]="filter() === 'finance'"
+      [class.btn-ghost]="filter() !== 'finance'"
+      [attr.aria-checked]="filter() === 'finance'"
+      (click)="setFilter('finance')"
+    >
+      Finance
+    </button>
+    <button
+      type="button"
+      role="radio"
+      class="btn"
+      [class.btn-secondary]="filter() === 'school'"
+      [class.btn-ghost]="filter() !== 'school'"
+      [attr.aria-checked]="filter() === 'school'"
+      (click)="setFilter('school')"
+    >
+      Vie scolaire
+    </button>
+  </div>
+</section>
+
+@if (isSuperAdmin()) {
+  <section
+    class="platform-alerts card card-pad"
+    aria-label="Notifications plateforme"
+  >
+    <h2 class="platform-alerts__title">Plateforme (vous)</h2>
+    <p class="platform-alerts__sub">
+      Signaux transverses tenants : intégrations, facturation SaaS, exports.
+      <a routerLink="/app/platform/monitoring">Monitoring</a>
+      ·
+      <a routerLink="/app/platform/support">Support</a>
+    </p>
+    <ul class="platform-alerts__list">
+      @for (n of filteredPlatform(); track n.title + n.time) {
+        <li
+          class="platform-alerts__item"
+          [class.platform-alerts__item--unread]="n.unread"
+        >
+          <div
+            class="platform-alerts__dot"
+            [class.platform-alerts__dot--on]="n.unread"
+            aria-hidden="true"
+          ></div>
+          <div>
+            <div class="platform-alerts__top">
+              <strong>{{ n.title }}</strong>
+              <time>{{ n.time }}</time>
+            </div>
+            <p class="platform-alerts__preview">{{ n.preview }}</p>
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+}
+
+<ul class="list card">
+  @for (n of filteredItems(); track n.title + n.time) {
+    <li [class.item]="true" [class.item--unread]="n.unread">
+      <div
+        class="item__dot"
+        [class.item__dot--on]="n.unread"
+        aria-hidden="true"
+      ></div>
+      <div class="item__body">
+        <div class="item__top">
+          <strong>{{ n.title }}</strong>
+          <time datetime="">{{ n.time }}</time>
+        </div>
+        <p>{{ n.preview }}</p>
+        <div class="item__actions">
+          <a routerLink="/app/invoices">Voir facture</a>
+          @if (n.unread) {
+            <button type="button" class="linkish" (click)="markRead(n)">
+              Marquer lu
+            </button>
+          }
+        </div>
+      </div>
+    </li>
+  }
+</ul>
