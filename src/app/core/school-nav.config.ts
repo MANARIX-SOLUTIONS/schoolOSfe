@@ -74,6 +74,11 @@ export function getSchoolNavGroups(role: SchoolRole): SchoolNavGroup[] {
               icon: 'building',
             },
             {
+              label: 'Fonctionnalités',
+              path: '/app/platform/features',
+              icon: 'layers',
+            },
+            {
               label: 'Monitoring',
               path: '/app/platform/monitoring',
               icon: 'pulse',

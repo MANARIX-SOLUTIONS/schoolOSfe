@@ -58,6 +58,7 @@ export class SuperAdminDashboardComponent {
   protected readonly shortcuts = [
     { label: 'Onboarding écoles', path: '/app/platform/onboarding' },
     { label: 'Établissements', path: '/app/platform/schools' },
+    { label: 'Fonctionnalités', path: '/app/platform/features' },
     { label: 'Monitoring plateforme', path: '/app/platform/monitoring' },
     { label: 'Facturation SaaS', path: '/app/platform/billing' },
     { label: 'Support & SLA', path: '/app/platform/support' },

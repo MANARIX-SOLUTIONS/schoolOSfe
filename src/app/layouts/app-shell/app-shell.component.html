@@ -105,6 +105,13 @@
             aria-label="Raccourcis plateforme"
           >
             <a
+              routerLink="/app/platform/features"
+              routerLinkActive="topbar__chip--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="topbar__chip"
+              >Fonctionnalités</a
+            >
+            <a
               routerLink="/app/platform/onboarding"
               routerLinkActive="topbar__chip--active"
               [routerLinkActiveOptions]="{ exact: false }"

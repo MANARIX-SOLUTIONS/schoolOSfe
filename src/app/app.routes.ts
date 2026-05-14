@@ -107,6 +107,14 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'platform/features',
+        canMatch: [superAdminGuard],
+        loadComponent: () =>
+          import('./pages/platform-features-page/platform-features-page.component').then(
+            (m) => m.PlatformFeaturesPageComponent,
+          ),
+      },
+      {
         path: 'platform/billing',
         canMatch: [superAdminGuard],
         loadComponent: () =>

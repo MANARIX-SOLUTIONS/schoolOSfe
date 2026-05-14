@@ -80,6 +80,11 @@ interface PlatformTenantRow {
               <td class="email">{{ row.adminEmail }}</td>
               <td class="actions">
                 <a
+                  routerLink="/app/platform/features"
+                  [queryParams]="{ t: row.slug }"
+                  >Modules</a
+                >
+                <a
                   routerLink="/app/platform/billing"
                   [queryParams]="{ t: row.slug }"
                   >Factu.</a
