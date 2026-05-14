@@ -1,0 +1,112 @@
+<section class="page-head">
+  <div>
+    <h1>Cantine</h1>
+    <p class="sub">
+      Menus de la semaine, quotas et inscriptions — lien comptable avec les
+      modules paiement et facturation.
+    </p>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="toggleMenuForm()">
+    @if (showMenuForm()) {
+      Fermer
+    } @else {
+      Publier le menu
+    }
+  </button>
+</section>
+
+@if (menuFlash(); as msg) {
+  <p class="flash card card-pad" role="status">{{ msg }}</p>
+}
+
+@if (showMenuForm()) {
+  <form
+    class="panel-form card card-pad"
+    novalidate
+    (ngSubmit)="addMenuDay(menuForm)"
+    #menuForm="ngForm"
+  >
+    <h2 class="panel-form__title">Ajouter un jour au menu</h2>
+    <div class="panel-form__grid">
+      <label>
+        Jour *
+        <select class="field" name="menuDay" [(ngModel)]="menuDay" required>
+          <option value="Jeudi">Jeudi</option>
+          <option value="Vendredi">Vendredi</option>
+          <option value="Samedi">Samedi</option>
+        </select>
+      </label>
+      <label class="full">
+        Plat *
+        <input
+          class="field"
+          type="text"
+          name="menuMeal"
+          [(ngModel)]="menuMeal"
+          required
+          minlength="2"
+          placeholder="ex. Mafé légumes"
+        />
+      </label>
+    </div>
+    <div class="panel-form__actions">
+      <button
+        type="button"
+        class="btn btn-ghost"
+        (click)="showMenuForm.set(false)"
+      >
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-primary">Ajouter</button>
+    </div>
+  </form>
+}
+
+<div class="layout">
+  <div class="card card-pad">
+    <h2>Menu (aperçu)</h2>
+    <ul class="menu">
+      @for (m of weekMenu(); track m.day + m.meal) {
+        <li>
+          <strong>{{ m.day }}</strong>
+          <span>{{ m.meal }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+  <div class="card card-pad">
+    <h2>Tarification</h2>
+    <form
+      class="tarif-form"
+      novalidate
+      (ngSubmit)="saveTarif(tarifForm)"
+      #tarifForm="ngForm"
+    >
+      <label class="tarif-form__label">
+        Prix jour / élève (FCFA) *
+        <input
+          class="field"
+          type="number"
+          name="dailyPrice"
+          [(ngModel)]="dailyPrice"
+          required
+          min="0"
+          step="100"
+        />
+      </label>
+      <button type="submit" class="btn btn-secondary btn-block">
+        Mettre à jour le tarif
+      </button>
+    </form>
+    <p class="price">
+      {{ dailyPrice | fcfa }} <span class="per">/ jour / élève (aperçu)</span>
+    </p>
+    <p class="muted">
+      Prélèvement possible sur compte famille ou facture mensuelle consolidée.
+    </p>
+    <div class="stat-inline">
+      <span class="badge">Inscrits</span>
+      <strong>186 élèves</strong>
+    </div>
+  </div>
+</div>
