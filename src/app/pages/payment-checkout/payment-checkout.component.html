@@ -1,0 +1,172 @@
+<section class="page-head">
+  <div>
+    <h1>Paiement — échéance T2</h1>
+    <p class="sub">
+      Élève : <strong>Ibrahima Ndiaye</strong> — échéancier annuel 2025–2026.
+      Montants affichés en francs CFA (XOF).
+    </p>
+  </div>
+</section>
+
+@if (paid()) {
+  <p class="flash-ok card card-pad" role="status">
+    Paiement simulé avec succès — en production, mise à jour après webhook
+    opérateur.
+  </p>
+}
+
+<div class="checkout">
+  <div class="summary card card-pad">
+    <h2>Récapitulatif</h2>
+    <dl class="lines">
+      <div>
+        <dt>Scolarité T2</dt>
+        <dd>{{ 400000 | fcfa }}</dd>
+      </div>
+      <div>
+        <dt>Frais d’inscription (prorata)</dt>
+        <dd>{{ 50000 | fcfa }}</dd>
+      </div>
+      <div class="lines__total">
+        <dt>Total à payer</dt>
+        <dd>{{ amountDue | fcfa }}</dd>
+      </div>
+    </dl>
+    <p class="fine">
+      Aucune donnée carte n’est stockée sur nos serveurs — traitement PSP ou
+      opérateur Mobile Money.
+    </p>
+  </div>
+
+  <form
+    class="methods card card-pad"
+    novalidate
+    (ngSubmit)="pay(checkoutForm)"
+    #checkoutForm="ngForm"
+  >
+    <h2>Moyen de paiement</h2>
+    <div
+      class="method-grid"
+      role="radiogroup"
+      aria-label="Mobile Money et carte"
+    >
+      <button
+        type="button"
+        class="method"
+        [class.method--active]="method() === 'wave'"
+        (click)="pick('wave')"
+      >
+        <span class="money-logo money-wave">W</span>
+        <span>Wave</span>
+      </button>
+      <button
+        type="button"
+        class="method"
+        [class.method--active]="method() === 'orange'"
+        (click)="pick('orange')"
+      >
+        <span class="money-logo money-om">OM</span>
+        <span>Orange Money</span>
+      </button>
+      <button
+        type="button"
+        class="method"
+        [class.method--active]="method() === 'free'"
+        (click)="pick('free')"
+      >
+        <span class="money-logo money-free">FM</span>
+        <span>Free Money</span>
+      </button>
+      <button
+        type="button"
+        class="method"
+        [class.method--active]="method() === 'card'"
+        (click)="pick('card')"
+      >
+        <span class="money-logo money-card">CB</span>
+        <span>Carte Visa / Mastercard</span>
+      </button>
+    </div>
+
+    @if (method() === "card") {
+      <div class="card-form">
+        <label
+          >Nom figurant sur la carte *
+          <input
+            class="field"
+            type="text"
+            name="cardName"
+            [(ngModel)]="cardName"
+            autocomplete="cc-name"
+            required
+        /></label>
+        <label
+          >Numéro *
+          <input
+            class="field"
+            type="text"
+            name="cardNumber"
+            [(ngModel)]="cardNumber"
+            inputmode="numeric"
+            autocomplete="cc-number"
+            placeholder="•••• •••• •••• ••••"
+            minlength="13"
+            required
+        /></label>
+        <div class="row2">
+          <label
+            >Expiration *
+            <input
+              class="field"
+              type="text"
+              name="cardExp"
+              [(ngModel)]="cardExp"
+              placeholder="MM/AA"
+              autocomplete="cc-exp"
+              required
+              pattern="[0-9]{2}/[0-9]{2}"
+          /></label>
+          <label
+            >CVV *
+            <input
+              class="field"
+              type="password"
+              name="cardCvv"
+              [(ngModel)]="cardCvv"
+              autocomplete="cc-csc"
+              minlength="3"
+              maxlength="4"
+              required
+          /></label>
+        </div>
+      </div>
+    } @else {
+      <p class="hint">
+        Vous serez redirigé vers l’application ou la page de confirmation de
+        l’opérateur. Le statut reviendra en <strong>temps réel</strong> via
+        webhook sécurisé.
+      </p>
+      <label
+        >Téléphone émetteur *
+        <input
+          class="field"
+          type="tel"
+          name="payerPhone"
+          [(ngModel)]="payerPhone"
+          placeholder="+221 77 …"
+          required
+          minlength="9"
+          autocomplete="tel"
+        />
+      </label>
+    }
+
+    @if (payError(); as err) {
+      <p class="pay-error" role="alert">{{ err }}</p>
+    }
+
+    <button type="submit" class="btn btn-primary btn-block pay-btn">
+      Payer {{ amountDue | fcfa }}
+    </button>
+  </form>
+</div>

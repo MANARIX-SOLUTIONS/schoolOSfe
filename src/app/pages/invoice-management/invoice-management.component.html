@@ -1,0 +1,170 @@
+<section class="page-head">
+  <div>
+    <h1>Factures &amp; échéanciers</h1>
+    <p class="sub">
+      Émission, relances et rapprochement avec les encaissements Mobile Money /
+      carte.
+    </p>
+  </div>
+  <a routerLink="/app/checkout" class="btn btn-primary">Nouveau paiement</a>
+</section>
+
+<nav class="inv-tabs" aria-label="Vue facturation">
+  <button
+    type="button"
+    class="inv-tabs__btn"
+    [class.inv-tabs__btn--active]="invoiceMainTab() === 0"
+    [attr.aria-selected]="invoiceMainTab() === 0"
+    (click)="pickInvoiceTab(0)"
+  >
+    Factures
+  </button>
+  <button
+    type="button"
+    class="inv-tabs__btn"
+    [class.inv-tabs__btn--active]="invoiceMainTab() === 1"
+    [attr.aria-selected]="invoiceMainTab() === 1"
+    (click)="pickInvoiceTab(1)"
+  >
+    Échéanciers &amp; pénalités
+  </button>
+</nav>
+
+@if (invoiceToast(); as toast) {
+  <p class="invoice-toast card card-pad" role="status">{{ toast }}</p>
+}
+
+@if (invoiceMainTab() === 0) {
+  <div class="stats">
+    <div class="stat card card-pad">
+      <span class="stat__label">Émis ce mois (FCFA)</span>
+      <strong class="stat__val">{{ 8450000 | fcfa }}</strong>
+    </div>
+    <div class="stat card card-pad">
+      <span class="stat__label">En retard</span>
+      <strong class="stat__val">{{ 3280000 | fcfa }}</strong>
+    </div>
+    <div class="stat card card-pad">
+      <span class="stat__label">Taux de recouvrement</span>
+      <strong class="stat__val">94 %</strong>
+    </div>
+  </div>
+
+  <div class="table-wrap card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Référence</th>
+          <th>Famille</th>
+          <th>Émise</th>
+          <th>Échéance</th>
+          <th>Montant</th>
+          <th>Statut</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of rows; track r.ref) {
+          <tr>
+            <td>
+              <code>{{ r.ref }}</code>
+            </td>
+            <td>{{ r.family }}</td>
+            <td>{{ r.issued }}</td>
+            <td>{{ r.due }}</td>
+            <td>{{ r.amount | fcfa }}</td>
+            <td>
+              @if (r.state === "Payée") {
+                <span class="badge">Payée</span>
+              } @else if (r.state === "En attente") {
+                <span class="badge badge-warn">En attente</span>
+              } @else {
+                <span class="badge badge-danger">En retard</span>
+              }
+            </td>
+            <td>
+              <button
+                type="button"
+                class="link-pdf"
+                (click)="downloadInvoicePdf(r)"
+              >
+                PDF
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else {
+  <div class="schedule-panels">
+    <section class="card card-pad">
+      <h2 class="panel-title">Calendrier des échéances (démo)</h2>
+      <p class="panel-lead">
+        Échéancier indicatif par trimestre — relances automatiques et reports
+        manuels seront branchés sur <code>schoolOSbe</code>.
+      </p>
+      <table class="table table--compact">
+        <thead>
+          <tr>
+            <th>Période</th>
+            <th>Libellé</th>
+            <th>Échéance</th>
+            <th>Montant type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>T1 2025–2026</td>
+            <td>Scolarité + frais fixes</td>
+            <td>15 sept. 2025</td>
+            <td>{{ 450000 | fcfa }}</td>
+          </tr>
+          <tr>
+            <td>T2 2025–2026</td>
+            <td>Scolarité</td>
+            <td>15 janv. 2026</td>
+            <td>{{ 450000 | fcfa }}</td>
+          </tr>
+          <tr>
+            <td>T3 2025–2026</td>
+            <td>Scolarité + activités</td>
+            <td>15 avr. 2026</td>
+            <td>{{ 480000 | fcfa }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card card-pad">
+      <h2 class="panel-title">Pénalités de retard (démo)</h2>
+      <p class="panel-lead">
+        Politique paramétrable par établissement : forfait, pourcentage
+        journalier, plafond, dispenses.
+      </p>
+      <ul class="penalty-list">
+        <li>
+          <strong>J+1 à J+7 après échéance</strong>
+          <span>Forfait {{ 5000 | fcfa }} — rappel e-mail / SMS</span>
+        </li>
+        <li>
+          <strong>J+8 à J+30</strong>
+          <span
+            >Majoration 1 % du solde restant (plafond {{ 25000 | fcfa }})</span
+          >
+        </li>
+        <li>
+          <strong>Après J+30</strong>
+          <span
+            >Blocage accès portail parents + relance physique (workflows
+            RH)</span
+          >
+        </li>
+      </ul>
+      <p class="panel-note">
+        Aucune pénalité appliquée automatiquement dans cette maquette — tableau
+        à titre d’exemple pour cadrage métier.
+      </p>
+    </section>
+  </div>
+}

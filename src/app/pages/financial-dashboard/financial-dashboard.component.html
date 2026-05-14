@@ -1,0 +1,90 @@
+<section class="page-head">
+  <div>
+    <h1>Tableau de bord financier</h1>
+    <p class="sub">
+      Revenus encaissés, impayés et répartition par canal — synthèse pour la
+      direction et la comptabilité.
+    </p>
+  </div>
+</section>
+
+@if (exportFlash(); as msg) {
+  <p class="flash card card-pad" role="status">{{ msg }}</p>
+}
+
+<form
+  class="export-bar card card-pad"
+  novalidate
+  (ngSubmit)="requestLedgerExport(expForm)"
+  #expForm="ngForm"
+>
+  <span class="export-bar__label">Export grand livre (CSV)</span>
+  <label>
+    <span class="sr-only">Date de début</span>
+    <input
+      class="field"
+      type="date"
+      name="exportStart"
+      [(ngModel)]="exportStart"
+      required
+    />
+  </label>
+  <span class="export-bar__sep">→</span>
+  <label>
+    <span class="sr-only">Date de fin</span>
+    <input
+      class="field"
+      type="date"
+      name="exportEnd"
+      [(ngModel)]="exportEnd"
+      required
+    />
+  </label>
+  <button type="submit" class="btn btn-secondary">Demander l’export</button>
+</form>
+
+<div class="grid">
+  <article class="card card-pad spark">
+    <h2>Encaissements cumulés (année)</h2>
+    <p class="big">{{ 89200000 | fcfa }}</p>
+    <div class="bar-row" aria-hidden="true">
+      @for (h of bars; track $index) {
+        <span class="bar" [style.height.%]="h"></span>
+      }
+    </div>
+    <div class="axis">
+      @for (m of months; track m) {
+        <span>{{ m }}</span>
+      }
+    </div>
+  </article>
+
+  <article class="card card-pad">
+    <h2>Répartition des canaux</h2>
+    <ul class="donut-legend">
+      <li><span class="swatch wave"></span> Wave — 38&nbsp;%</li>
+      <li><span class="swatch om"></span> Orange Money — 31&nbsp;%</li>
+      <li><span class="swatch free"></span> Free Money — 12&nbsp;%</li>
+      <li><span class="swatch card"></span> Carte — 19&nbsp;%</li>
+    </ul>
+    <p class="note">
+      Données indicatives — consolidées après réconciliation webhook.
+    </p>
+  </article>
+
+  <article class="card card-pad warn-card">
+    <h2>Impayés prioritaires</h2>
+    <p class="big muted">{{ 3280000 | fcfa }}</p>
+    <p>
+      12 familles au-delà de 30 jours — relances SMS programmées (file
+      sécurisée).
+    </p>
+    <button
+      type="button"
+      class="btn btn-secondary btn-block"
+      (click)="quickExportImpayes()"
+    >
+      Exporter la liste des impayés (CSV)
+    </button>
+  </article>
+</div>
