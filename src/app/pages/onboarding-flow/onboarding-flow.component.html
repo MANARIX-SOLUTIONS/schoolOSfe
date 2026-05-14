@@ -1,0 +1,248 @@
+<div class="onboarding">
+  <header class="onboarding__bar">
+    <a routerLink="/" class="onboarding__brand">
+      <img
+        ngSrc="/SchoolOS.png"
+        width="72"
+        height="72"
+        alt=""
+        class="app-brand-logo"
+      />
+      SchoolOS Sénégal
+    </a>
+    <div
+      class="onboarding__progress"
+      role="progressbar"
+      [attr.aria-valuenow]="progress()"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      <div class="onboarding__progress-fill" [style.width.%]="progress()"></div>
+    </div>
+    <span class="onboarding__step-label"
+      >Étape {{ step() + 1 }} / {{ steps.length }}</span
+    >
+  </header>
+
+  <main class="onboarding__main card" id="main-content" tabindex="-1">
+    <nav class="onboarding__steps" aria-label="Étapes d’onboarding">
+      @for (label of steps; track label; let i = $index) {
+        <button
+          type="button"
+          class="onboarding__step"
+          [class.onboarding__step--active]="i === step()"
+          [class.onboarding__step--done]="i < step()"
+          (click)="step.set(i)"
+        >
+          <span class="onboarding__step-index">{{ i + 1 }}</span>
+          {{ label }}
+        </button>
+      }
+    </nav>
+
+    <section class="onboarding__panel">
+      @switch (step()) {
+        @case (0) {
+          <form #step0="ngForm" (ngSubmit)="submitStep0(step0)">
+            <h1>Profil de l’établissement</h1>
+            <p class="muted">
+              Ces informations alimentent vos factures, reçus et portail parents
+              (modifiables plus tard).
+            </p>
+            <div class="form-grid">
+              <label
+                >Raison sociale *
+                <input
+                  type="text"
+                  class="input"
+                  name="legalName"
+                  [(ngModel)]="profile.legalName"
+                  placeholder="Lycée Horizon"
+                  required
+                  autocomplete="organization"
+                />
+              </label>
+              <label
+                >Identifiant fiscal / NINEA (optionnel)
+                <input
+                  type="text"
+                  class="input"
+                  name="ninea"
+                  [(ngModel)]="profile.ninea"
+                  placeholder="XXXXXXXXX"
+                />
+              </label>
+              <label
+                >Ville *
+                <input
+                  type="text"
+                  class="input"
+                  name="city"
+                  [(ngModel)]="profile.city"
+                  placeholder="Dakar"
+                  required
+                  autocomplete="address-level2"
+                />
+              </label>
+              <label
+                >Téléphone administration *
+                <input
+                  type="tel"
+                  class="input"
+                  name="adminPhone"
+                  [(ngModel)]="profile.adminPhone"
+                  placeholder="+221 XX XXX XX XX"
+                  required
+                  autocomplete="tel"
+                />
+              </label>
+            </div>
+            <footer class="onboarding__actions">
+              @if (step() > 0) {
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="prev()"
+                >
+                  Retour
+                </button>
+              }
+              <button type="submit" class="btn btn-primary">Continuer</button>
+            </footer>
+          </form>
+        }
+        @case (1) {
+          <form #step1="ngForm" (ngSubmit)="submitStep1(step1)">
+            <h1>Abonnement &amp; facturation</h1>
+            <p class="muted">
+              Paiement en FCFA. Facturation électronique, TVA selon votre
+              statut.
+            </p>
+            <div class="plan-choice" role="radiogroup" aria-label="Forfait">
+              <label class="plan-card">
+                <input
+                  type="radio"
+                  name="billingPlan"
+                  value="essential"
+                  [(ngModel)]="billingPlan"
+                  required
+                />
+                <div>
+                  <strong>Forfait Essentiel</strong>
+                  <span>Jusqu’à 250 élèves actifs</span>
+                </div>
+              </label>
+              <label class="plan-card">
+                <input
+                  type="radio"
+                  name="billingPlan"
+                  value="establishment"
+                  [(ngModel)]="billingPlan"
+                />
+                <div>
+                  <strong>Forfait Établissement</strong>
+                  <span>Multi-sites, rôles avancés</span>
+                </div>
+              </label>
+            </div>
+            <label class="full"
+              >Contact facturation *
+              <input
+                type="email"
+                class="input"
+                name="billingEmail"
+                [(ngModel)]="billingEmail"
+                placeholder="compta@ecole.sn"
+                required
+                email
+                autocomplete="email"
+              />
+            </label>
+            <footer class="onboarding__actions">
+              <button type="button" class="btn btn-secondary" (click)="prev()">
+                Retour
+              </button>
+              <button type="submit" class="btn btn-primary">Continuer</button>
+            </footer>
+          </form>
+        }
+        @case (2) {
+          <form #step2="ngForm" (ngSubmit)="submitStep2(step2)">
+            <h1>Identité visuelle</h1>
+            <p class="muted">
+              Logo, couleurs et entête pour PDF (bulletins, factures, reçus).
+            </p>
+            <div
+              class="dropzone"
+              tabindex="0"
+              role="button"
+              (click)="$event.preventDefault()"
+              (keydown.enter)="$event.preventDefault()"
+            >
+              Déposez votre logo (PNG / SVG, max 2&nbsp;Mo) — démo : pas
+              d’upload réel
+            </div>
+            <div class="form-grid">
+              <label
+                >Couleur principale
+                <input
+                  type="color"
+                  class="input input--color"
+                  name="primaryColor"
+                  [(ngModel)]="primaryColor"
+                />
+              </label>
+              <label
+                >Couleur accent
+                <input
+                  type="color"
+                  class="input input--color"
+                  name="accentColor"
+                  [(ngModel)]="accentColor"
+                />
+              </label>
+            </div>
+            <footer class="onboarding__actions">
+              <button type="button" class="btn btn-secondary" (click)="prev()">
+                Retour
+              </button>
+              <button type="submit" class="btn btn-primary">Continuer</button>
+            </footer>
+          </form>
+        }
+        @default {
+          <form #step3="ngForm" (ngSubmit)="submitStep3(step3)">
+            <h1>Invitation de l’équipe</h1>
+            <p class="muted">
+              Envoyez des accès sécurisés (direction, comptabilité, vie
+              scolaire).
+            </p>
+            <label
+              >E-mails (séparés par des virgules)
+              <textarea
+                class="input"
+                name="inviteEmails"
+                rows="3"
+                [(ngModel)]="inviteEmails"
+                placeholder="directeur@ecole.sn, compta@ecole.sn"
+              ></textarea>
+            </label>
+            <p class="fine-print">
+              Les utilisateurs recevront un lien d’activation avec rôle à
+              définir.
+              <a routerLink="/app/dashboard">Passer cette étape</a>
+            </p>
+            <footer class="onboarding__actions">
+              <button type="button" class="btn btn-secondary" (click)="prev()">
+                Retour
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Terminer et ouvrir le tableau de bord
+              </button>
+            </footer>
+          </form>
+        }
+      }
+    </section>
+  </main>
+</div>

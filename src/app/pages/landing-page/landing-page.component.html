@@ -1,0 +1,207 @@
+<div id="main-content" class="landing mesh-hero" tabindex="-1">
+  <header class="landing__nav">
+    <a class="landing__logo" routerLink="/">
+      <img
+        ngSrc="/SchoolOS.png"
+        width="72"
+        height="72"
+        alt=""
+        class="app-brand-logo"
+        priority
+      />
+      SchoolOS Sénégal
+    </a>
+    <nav class="landing__links" aria-label="Navigation marketing">
+      <a href="#fonctions">Fonctions</a>
+      <a href="#paiements">Paiements</a>
+      <a href="#tarifs">Tarifs</a>
+      <a routerLink="/connexion" class="landing__link-quiet">Connexion</a>
+      <a routerLink="/parent" class="landing__link-quiet">Portail parents</a>
+      <a routerLink="/onboarding" class="btn btn-primary">Créer mon espace</a>
+    </nav>
+    <a routerLink="/app/dashboard" class="btn btn-secondary landing__demo"
+      >Voir la démo</a
+    >
+  </header>
+
+  <section class="landing__hero">
+    <div class="landing__hero-copy">
+      <p class="landing__eyebrow">
+        SaaS pour écoles privées en Afrique de l’Ouest
+      </p>
+      <h1>
+        La gestion scolaire moderne, pensée pour <em>Dakar et la région</em>.
+      </h1>
+      <p class="landing__lead">
+        Centralisez inscriptions, scolarité, communication avec les familles et
+        encaissements <strong>Mobile Money &amp; cartes</strong> — en francs
+        CFA, avec une expérience fluide sur mobile.
+      </p>
+      <div class="landing__cta">
+        <a routerLink="/onboarding" class="btn btn-primary btn-lg"
+          >Démarrer l’onboarding</a
+        >
+        <a routerLink="/app/dashboard" class="btn btn-secondary btn-lg"
+          >Explorer le tableau de bord</a
+        >
+      </div>
+      <ul class="landing__trust">
+        <li>
+          <span class="landing__pill">Conforme multi-établissements</span>
+        </li>
+        <li><span class="landing__pill">Données isolées par école</span></li>
+        <li>
+          <span class="landing__pill">Relances &amp; reçus automatiques</span>
+        </li>
+      </ul>
+    </div>
+    <div class="landing__hero-visual" aria-hidden="true">
+      <div class="preview-card">
+        <div class="preview-card__head">
+          <span>Encaissements — Mai 2026</span>
+          <span class="badge">Temps réel</span>
+        </div>
+        <div class="preview-card__row">
+          <span>Reçus cette semaine</span>
+          <strong>18 450&nbsp;000&nbsp;FCFA</strong>
+        </div>
+        <div class="preview-card__bars">
+          <span style="height: 40%"></span>
+          <span style="height: 65%"></span>
+          <span style="height: 52%"></span>
+          <span style="height: 88%"></span>
+          <span style="height: 72%"></span>
+        </div>
+        <div class="preview-card__payments">
+          <span class="money-logo money-wave">Wave</span>
+          <span class="money-logo money-om">OM</span>
+          <span class="money-logo money-free">FM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing__section" id="fonctions">
+    <h2>Tout ce qu’une école privée attend d’une plateforme premium</h2>
+    <p class="landing__sub">
+      Modules pensés avec des directions, comptables et parents — interface en
+      français, prête pour l’international (Wolof, anglais) selon votre feuille
+      de route.
+    </p>
+    <div class="grid-3">
+      <article class="feature card card-pad">
+        <h3>Inscriptions &amp; dossiers</h3>
+        <p>
+          Workflow complet : collecte, pièces, validation et affectation classe
+          / année.
+        </p>
+      </article>
+      <article class="feature card card-pad">
+        <h3>Vie scolaire &amp; communication</h3>
+        <p>
+          Notifications ciblées, centre de messages et fil élève pour les
+          familles.
+        </p>
+      </article>
+      <article class="feature card card-pad">
+        <h3>Finances &amp; impayés</h3>
+        <p>
+          Échéanciers, pénalités, relances SMS/WhatsApp et exports comptables.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="landing__section landing__section--dark" id="paiements">
+    <div class="landing__section-inner">
+      <h2>Paiements locaux, sans friction</h2>
+      <p class="landing__sub landing__sub--on-dark">
+        Le module paiement est au cœur de SchoolOS : vues direction, parents et
+        comptabilité partagent la même source de vérité.
+      </p>
+      <div class="pay-grid">
+        <div class="pay-card">
+          <div class="money-logo money-wave">Wave</div>
+          <h3>Wave</h3>
+          <p>Lien de paiement sécurisé et confirmation par webhook.</p>
+        </div>
+        <div class="pay-card">
+          <div class="money-logo money-om">OM</div>
+          <h3>Orange Money</h3>
+          <p>Flux opérateur avec statuts pending / succès / échec.</p>
+        </div>
+        <div class="pay-card">
+          <div class="money-logo money-free">FM</div>
+          <h3>Free Money</h3>
+          <p>Parité avec les autres canaux Mobile Money.</p>
+        </div>
+        <div class="pay-card">
+          <div class="money-logo money-card">CB</div>
+          <h3>Carte bancaire</h3>
+          <p>PSP partenaire — PCI déléguée, 3-D Secure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing__section" id="tarifs">
+    <h2>Tarification transparente</h2>
+    <p class="landing__sub">
+      À partir d’un forfait par élève actif — adaptez selon votre taille.
+    </p>
+    <div class="pricing">
+      <div class="pricing__card card card-pad">
+        <h3>Essentiel</h3>
+        <p class="pricing__price">Sur devis</p>
+        <ul>
+          <li>Jusqu’à 250 élèves</li>
+          <li>Facturation &amp; Mobile Money</li>
+          <li>Portail parents lecture seule</li>
+        </ul>
+        <a routerLink="/onboarding" class="btn btn-secondary btn-block"
+          >Choisir</a
+        >
+      </div>
+      <div class="pricing__card pricing__card--accent card card-pad">
+        <div class="pricing__ribbon">Populaire</div>
+        <h3>Établissement</h3>
+        <p class="pricing__price">Sur devis</p>
+        <ul>
+          <li>Multi-sites &amp; rôles avancés</li>
+          <li>Relances automatisées</li>
+          <li>Tableaux de bord direction</li>
+        </ul>
+        <a routerLink="/onboarding" class="btn btn-primary btn-block"
+          >Nous contacter</a
+        >
+      </div>
+      <div class="pricing__card card card-pad">
+        <h3>Réseau</h3>
+        <p class="pricing__price">Hybride</p>
+        <ul>
+          <li>Groupe / franchise</li>
+          <li>SSO &amp; API dédiées</li>
+          <li>Accompagnement sur site</li>
+        </ul>
+        <a routerLink="/onboarding" class="btn btn-secondary btn-block"
+          >Parler à un expert</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <footer class="landing__footer">
+    <div>
+      <strong>SchoolOS Sénégal</strong>
+      <p>
+        Construit pour les écoles privées — conformité &amp; souveraineté des
+        données.
+      </p>
+    </div>
+    <div class="landing__footer-links">
+      <a routerLink="/parent">Espace parents</a>
+      <a routerLink="/app/dashboard">Démo école</a>
+      <span>FR · prêt i18n</span>
+    </div>
+  </footer>
+</div>
