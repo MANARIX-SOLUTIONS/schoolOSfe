@@ -1,0 +1,201 @@
+<section class="page-head">
+  <div>
+    <h1>Inscription — nouveau dossier</h1>
+    <p class="sub">
+      Parcours guidé : informations élève, tuteur, pièces jointes puis
+      validation direction.
+    </p>
+  </div>
+</section>
+
+@if (submitted()) {
+  <p class="flash-success card card-pad" role="status">
+    Dossier soumis (démo) — redirection vers la liste des élèves…
+  </p>
+}
+
+<div class="flow card">
+  <ol class="flow__track" aria-label="Étapes d’inscription">
+    <li
+      [class.flow__step--active]="phase() === 0"
+      [class.flow__step--done]="phase() > 0"
+    >
+      1. Élève
+    </li>
+    <li
+      [class.flow__step--active]="phase() === 1"
+      [class.flow__step--done]="phase() > 1"
+    >
+      2. Famille
+    </li>
+    <li [class.flow__step--active]="phase() === 2">3. Documents</li>
+  </ol>
+
+  <div class="flow__panel">
+    @switch (phase()) {
+      @case (0) {
+        <form #p0="ngForm" (ngSubmit)="submitPhase0(p0)">
+          <h2 class="flow__title">Identité de l’élève</h2>
+          <div class="grid2">
+            <label
+              >Prénom *
+              <input
+                class="field"
+                type="text"
+                name="studentFirstName"
+                [(ngModel)]="student.firstName"
+                required
+                autocomplete="given-name"
+            /></label>
+            <label
+              >Nom *
+              <input
+                class="field"
+                type="text"
+                name="studentLastName"
+                [(ngModel)]="student.lastName"
+                required
+                autocomplete="family-name"
+            /></label>
+            <label
+              >Date de naissance *
+              <input
+                class="field"
+                type="date"
+                name="studentBirthDate"
+                [(ngModel)]="student.birthDate"
+                required
+            /></label>
+            <label
+              >Niveau souhaité *
+              <select
+                class="field"
+                name="studentLevel"
+                [(ngModel)]="student.level"
+                required
+              >
+                <option value="CP">CP</option>
+                <option value="6e">6e</option>
+                <option value="4e">4e</option>
+                <option value="2nde">2nde</option>
+              </select>
+            </label>
+          </div>
+          <div class="flow__nav">
+            <button type="submit" class="btn btn-primary">Continuer</button>
+            <a routerLink="/app/students" class="btn btn-ghost">Annuler</a>
+          </div>
+        </form>
+      }
+      @case (1) {
+        <form #p1="ngForm" (ngSubmit)="submitPhase1(p1)">
+          <h2 class="flow__title">Tuteur légal</h2>
+          <div class="grid2">
+            <label
+              >Nom complet *
+              <input
+                class="field"
+                type="text"
+                name="guardianFullName"
+                [(ngModel)]="guardian.fullName"
+                placeholder="Prénom Nom"
+                required
+                autocomplete="name"
+            /></label>
+            <label
+              >Lien de parenté *
+              <select
+                class="field"
+                name="guardianRelation"
+                [(ngModel)]="guardian.relation"
+                required
+              >
+                <option value="Père">Père</option>
+                <option value="Mère">Mère</option>
+                <option value="Tuteur">Tuteur</option>
+              </select>
+            </label>
+            <label
+              >Téléphone (WhatsApp) *
+              <input
+                class="field"
+                type="tel"
+                name="guardianPhone"
+                [(ngModel)]="guardian.phone"
+                placeholder="+221…"
+                required
+                autocomplete="tel"
+            /></label>
+            <label
+              >E-mail *
+              <input
+                class="field"
+                type="email"
+                name="guardianEmail"
+                [(ngModel)]="guardian.email"
+                required
+                email
+                autocomplete="email"
+            /></label>
+          </div>
+          <div class="flow__nav">
+            <button type="button" class="btn btn-secondary" (click)="prev()">
+              Étape précédente
+            </button>
+            <button type="submit" class="btn btn-primary">Continuer</button>
+            <a routerLink="/app/students" class="btn btn-ghost">Annuler</a>
+          </div>
+        </form>
+      }
+      @default {
+        <form #p2="ngForm" (ngSubmit)="submitPhase2(p2)">
+          <h2 class="flow__title">Pièces justificatives</h2>
+          <p class="muted">
+            Certificat de naissance, bulletin précédent, photo d’identité.
+          </p>
+          <div class="upload-grid">
+            <button
+              type="button"
+              class="upload"
+              (click)="$event.preventDefault()"
+            >
+              Certificat / extrait
+            </button>
+            <button
+              type="button"
+              class="upload"
+              (click)="$event.preventDefault()"
+            >
+              Dernier bulletin
+            </button>
+            <button
+              type="button"
+              class="upload"
+              (click)="$event.preventDefault()"
+            >
+              Photo élève
+            </button>
+          </div>
+          <label class="check">
+            <input
+              type="checkbox"
+              name="dossierComplete"
+              [(ngModel)]="dossierComplete"
+              required
+            />
+            Le dossier est complet et peut être soumis à la direction
+          </label>
+          <div class="flow__nav">
+            <button type="button" class="btn btn-secondary" (click)="prev()">
+              Étape précédente
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Soumettre le dossier
+            </button>
+            <a routerLink="/app/students" class="btn btn-ghost">Annuler</a>
+          </div>
+        </form>
+      }
+    }
+  </div>
+</div>
