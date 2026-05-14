@@ -1,0 +1,219 @@
+<section class="page-head">
+  <div>
+    <h1>Pédagogie</h1>
+    <p class="sub">
+      Notes, bulletins, absences et devoirs — modules décrits dans la
+      documentation produit, prêts à être branchés sur l’API.
+    </p>
+  </div>
+</section>
+
+<div class="tabs" role="tablist" aria-label="Modules pédagogiques">
+  <button
+    type="button"
+    role="tab"
+    class="tab"
+    [class.tab--active]="tab() === 0"
+    [attr.aria-selected]="tab() === 0"
+    (click)="pick(0)"
+  >
+    Notes &amp; barèmes
+  </button>
+  <button
+    type="button"
+    role="tab"
+    class="tab"
+    [class.tab--active]="tab() === 1"
+    [attr.aria-selected]="tab() === 1"
+    (click)="pick(1)"
+  >
+    Bulletins
+  </button>
+  <button
+    type="button"
+    role="tab"
+    class="tab"
+    [class.tab--active]="tab() === 2"
+    [attr.aria-selected]="tab() === 2"
+    (click)="pick(2)"
+  >
+    Absences
+  </button>
+  <button
+    type="button"
+    role="tab"
+    class="tab"
+    [class.tab--active]="tab() === 3"
+    [attr.aria-selected]="tab() === 3"
+    (click)="pick(3)"
+  >
+    Devoirs
+  </button>
+</div>
+
+@if (formFlash(); as msg) {
+  <p class="flash card card-pad">{{ msg }}</p>
+}
+
+<div class="panel card card-pad" role="tabpanel">
+  @switch (tab()) {
+    @case (0) {
+      <h2>Barèmes par matière</h2>
+      <p class="muted">
+        Coefficients et périodes (trimestres). Calcul des moyennes consolidées
+        côté serveur.
+      </p>
+      <form
+        class="inline-form"
+        novalidate
+        (ngSubmit)="saveScale(scaleForm)"
+        #scaleForm="ngForm"
+      >
+        <div class="inline-form__row">
+          <label>
+            Matière
+            <select
+              class="field"
+              name="scaleSubject"
+              [(ngModel)]="scaleSubject"
+              required
+            >
+              <option value="Mathématiques">Mathématiques</option>
+              <option value="Français">Français</option>
+              <option value="Physique-Chimie">Physique-Chimie</option>
+              <option value="SVT">SVT</option>
+            </select>
+          </label>
+          <label>
+            Coefficient *
+            <input
+              class="field"
+              type="number"
+              name="scaleCoef"
+              step="0.5"
+              min="0.5"
+              max="20"
+              [(ngModel)]="scaleCoef"
+              required
+            />
+          </label>
+          <button type="submit" class="btn btn-primary inline-form__btn">
+            Enregistrer
+          </button>
+        </div>
+      </form>
+      <ul class="bullets">
+        <li>Import CSV des notes (enseignant)</li>
+        <li>Verrouillage des périodes par la direction</li>
+      </ul>
+    }
+    @case (1) {
+      <h2>Bulletins &amp; publications</h2>
+      <p class="muted">
+        Modèles PDF par cycle, publication contrôlée vers le
+        <a routerLink="/parent">portail parents</a>.
+      </p>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="previewBulletin()"
+      >
+        Prévisualiser un bulletin
+      </button>
+    }
+    @case (2) {
+      <h2>Absences &amp; justificatifs</h2>
+      <p class="muted">
+        Saisie enseignant / vie scolaire, notification temps réel aux familles.
+      </p>
+      <p>
+        <span class="badge badge-warn">3</span> absences non justifiées cette
+        semaine (4e B).
+      </p>
+      <form
+        class="stack-form"
+        novalidate
+        (ngSubmit)="saveAbsence(absForm)"
+        #absForm="ngForm"
+      >
+        <div class="stack-form__grid">
+          <label>
+            Élève *
+            <input
+              class="field"
+              type="text"
+              name="absenceStudent"
+              [(ngModel)]="absenceStudent"
+              required
+              placeholder="Nom et prénom"
+            />
+          </label>
+          <label>
+            Date *
+            <input
+              class="field"
+              type="date"
+              name="absenceDate"
+              [(ngModel)]="absenceDate"
+              required
+            />
+          </label>
+          <label class="full">
+            Motif / commentaire
+            <input
+              class="field"
+              type="text"
+              name="absenceReason"
+              [(ngModel)]="absenceReason"
+              placeholder="Maladie, motif familial…"
+            />
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Enregistrer l’absence
+        </button>
+      </form>
+    }
+    @default {
+      <h2>Devoirs &amp; pièces jointes</h2>
+      <p class="muted">
+        Carnet numérique : échéances, fichiers, accusé de lecture parent
+        (feuille de route).
+      </p>
+      <form
+        class="stack-form"
+        novalidate
+        (ngSubmit)="saveHomework(hwForm)"
+        #hwForm="ngForm"
+      >
+        <div class="stack-form__grid">
+          <label class="full">
+            Intitulé *
+            <input
+              class="field"
+              type="text"
+              name="hwTitle"
+              [(ngModel)]="hwTitle"
+              required
+              minlength="3"
+              placeholder="Exercices ch. 4 — probabilités"
+            />
+          </label>
+          <label>
+            Date limite *
+            <input
+              class="field"
+              type="date"
+              name="hwDue"
+              [(ngModel)]="hwDue"
+              required
+            />
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Publier le devoir (démo)
+        </button>
+      </form>
+    }
+  }
+</div>

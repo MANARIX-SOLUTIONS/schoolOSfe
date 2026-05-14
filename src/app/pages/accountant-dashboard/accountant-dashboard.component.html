@@ -1,0 +1,63 @@
+<section class="page-head">
+  <div>
+    <h1>Comptabilité — tableau de bord</h1>
+    <p class="sub">
+      Focus trésorerie, impayés et rapprochements — montants en FCFA (XOF).
+    </p>
+  </div>
+  <div class="page-head__actions">
+    <a routerLink="/app/reports" class="btn btn-secondary">Exports CSV</a>
+    <a routerLink="/app/finance" class="btn btn-primary">Voir les finances</a>
+  </div>
+</section>
+
+<section class="kpi-grid" aria-label="Indicateurs financiers">
+  @for (k of kpis; track k.label) {
+    <article class="kpi card card-pad card--hoverable">
+      <div class="kpi__label">{{ k.label }}</div>
+      @if (k.isMoney) {
+        <div class="kpi__value">{{ k.value | fcfa }}</div>
+      } @else {
+        <div class="kpi__value">{{ k.value }}</div>
+      }
+      <div
+        class="kpi__delta"
+        [class.kpi__delta--warn]="k.tone === 'warn'"
+        [class.kpi__delta--up]="k.tone === 'up'"
+      >
+        {{ k.delta }}
+      </div>
+    </article>
+  }
+</section>
+
+<div class="layout-split">
+  <section class="panel card">
+    <div class="panel__head">
+      <h2>À traiter</h2>
+    </div>
+    <ul class="alert-list">
+      @for (a of alerts; track a.title) {
+        <li [class]="'alert-list__item alert-list__item--' + a.type">
+          <strong>{{ a.title }}</strong>
+          <span>{{ a.detail }}</span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="panel card">
+    <div class="panel__head">
+      <h2>Raccourcis</h2>
+    </div>
+    <div class="shortcuts">
+      @for (s of shortcuts; track s.path) {
+        <a [routerLink]="s.path" class="shortcut">{{ s.label }}</a>
+      }
+    </div>
+    <p class="hint">
+      La direction voit une vue plus large sur
+      <a routerLink="/app/dashboard">le tableau de bord principal</a>.
+    </p>
+  </section>
+</div>
