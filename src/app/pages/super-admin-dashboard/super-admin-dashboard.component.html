@@ -1,0 +1,68 @@
+<section class="page-head">
+  <div>
+    <h1>Super Admin (vous) — pilotage plateforme</h1>
+    <p class="sub">
+      Visibilité multi-tenant — abonnements, intégrations paiement et santé du
+      service. Montants indicatifs en FCFA.
+    </p>
+  </div>
+  <div class="page-head__actions">
+    <a routerLink="/app/platform/onboarding" class="btn btn-secondary"
+      >Onboarding écoles</a
+    >
+    <a routerLink="/app/platform/monitoring" class="btn btn-primary"
+      >Monitoring</a
+    >
+  </div>
+</section>
+
+<section class="kpi-grid" aria-label="Indicateurs plateforme">
+  @for (k of kpis; track k.label) {
+    <article class="kpi card card-pad card--hoverable">
+      <div class="kpi__label">{{ k.label }}</div>
+      @if (k.isMoney) {
+        <div class="kpi__value">{{ k.value | fcfa }}</div>
+      } @else {
+        <div class="kpi__value">{{ k.value }}</div>
+      }
+      <div
+        class="kpi__delta"
+        [class.kpi__delta--warn]="k.tone === 'warn'"
+        [class.kpi__delta--up]="k.tone === 'up'"
+      >
+        {{ k.delta }}
+      </div>
+    </article>
+  }
+</section>
+
+<div class="layout-split">
+  <section class="panel card">
+    <div class="panel__head">
+      <h2>Alertes plateforme</h2>
+    </div>
+    <ul class="alert-list">
+      @for (a of alerts; track a.title) {
+        <li [class]="'alert-list__item alert-list__item--' + a.type">
+          <strong>{{ a.title }}</strong>
+          <span>{{ a.detail }}</span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="panel card">
+    <div class="panel__head">
+      <h2>Raccourcis</h2>
+    </div>
+    <div class="shortcuts">
+      @for (s of shortcuts; track s.path) {
+        <a [routerLink]="s.path" class="shortcut">{{ s.label }}</a>
+      }
+    </div>
+    <p class="hint">
+      Parcours <strong>Plateforme (vous)</strong> dans la barre latérale —
+      onboarding, monitoring, facturation et support.
+    </p>
+  </section>
+</div>
